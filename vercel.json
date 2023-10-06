@@ -1,7 +1,6 @@
 {
   "functions": {
     "api": {
-      "handler": "api/server.js",
       "memory": 128
     }
   }
