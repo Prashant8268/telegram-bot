@@ -3,15 +3,11 @@ import { Telegraf } from 'telegraf';
 import axios from 'axios';
 import { SubscribersService } from './config/subscribers.service';
 import * as schedule from 'node-schedule';
-import { Ctx } from 'nestjs-telegraf';
-
-
 
 
 @Injectable()
 export class TelegramService {
   private bot: Telegraf;
-
   constructor(private readonly subscribersService:SubscribersService) {
     this.bot = new Telegraf(process.env.TELEGRAM_BOT_TOKEN);
     this.initializeBot();
@@ -30,36 +26,36 @@ export class TelegramService {
       `);
     });
 
-// subscribe 
-this.bot.command('subscribe', async (ctx) => {
-  let userId = ctx.message.from.id;
-  const name = ctx.message.from.first_name;
-  const existingSubscriber = await this.subscribersService.findSubscriberByUserId(userId);
-  const commandArgs = ctx.message.text.split(' '); 
-  let city:string;
+  // subscribe 
+  this.bot.command('subscribe', async (ctx) => {
+    let userId = ctx.message.from.id;
+    const name = ctx.message.from.first_name;
+    const existingSubscriber = await this.subscribersService.findSubscriberByUserId(userId);
+    const commandArgs = ctx.message.text.split(' '); 
+    let city:string;
 
-  // Split the command into words
-  if (commandArgs.length < 2) {
-    ctx.reply('Please provide a city name. Usage: /subscribe {cityName}');
-    return ;
-  } else {
-     city = commandArgs.slice(1).join(' ');
-  }
-  if (existingSubscriber) {
-
-    ctx.reply('You are already subscribed.');
-  } else {
-
-    // Create a new subscriber
-    const newSubscriber = await this.subscribersService.createSubscriber(name, userId,city);
-    
-    if (newSubscriber) {
-      ctx.reply('You have been successfully subscribed to weather updates.');
+    // Split the command into words
+    if (commandArgs.length < 2) {
+      ctx.reply('Please provide a city name. Usage: /subscribe {cityName}');
+      return ;
     } else {
-      ctx.reply('Unable to subscribe at the moment. Please try again later.');
+      city = commandArgs.slice(1).join(' ');
     }
-  }
-});
+    if (existingSubscriber) {
+
+      ctx.reply('You are already subscribed.');
+    } else {
+
+      // Create a new subscriber
+      const newSubscriber = await this.subscribersService.createSubscriber(name, userId,city);
+      
+      if (newSubscriber) {
+        ctx.reply('You have been successfully subscribed to weather updates.');
+      } else {
+        ctx.reply('Unable to subscribe at the moment. Please try again later.');
+      }
+    }
+  });
 
 
 
@@ -80,13 +76,10 @@ this.bot.command('unsubscribe', async (ctx) => {
 // todayWeather
 this.bot.command('weather', async(ctx) => {
   const commandArgs = ctx.message.text.split(' '); 
-  // Split the command into words
   if (commandArgs.length < 2) {
     ctx.reply('Please provide a city name. Usage: /weather {city}');
   } else {
     const city = commandArgs.slice(1).join(' ');
-     // Join all words except the command itself
-    // Now, 'city' contains the city name provided by the user
     const todayTem = await this.fetchWeather(city);
     ctx.reply(`Today's Temperatur of  ${city} is  ${todayTem}`);
   }
@@ -121,7 +114,6 @@ this.bot.command('todayWeather',async(ctx)=>{
     const job = schedule.scheduleJob('0 6 * * *', async () => {
       // This code will be executed at 6 AM every day
       console.log('Scheduled task executed at 6 AM.');
-      // Fetch weather updates and send them to subscribers
       const subscribers = await this.subscribersService.findAllSubscribers();
       for (const subscriber of subscribers) {
         const weatherDetails = await this.fetchWeather(subscriber.city);
@@ -183,18 +175,9 @@ this.bot.command('todayWeather',async(ctx)=>{
     return 'I did not understand your message. Please try again or use commands.';
   }
 
-
-
-
-
   startBot() {
     this.bot.launch();
   }
 }
 
 
-
-    // const coordinatesResponse = await axios.get('https://api.opencagedata.com/geocode/v1/json?q=bulandshahr&key=66e757103f41494ca485b0d8529a8196')
-    // const coordinates = coordinatesResponse.data.results[0].geometry;
-    // const weatherResponse = await axios.get(`https://api.tomorrow.io/v4/weather/forecast?location=${coordinates.lat},${coordinates.lng}&apikey=TEtTrRlRpLd15PgAIl9pPYVe4PqKvWXG`);
-    // const todayTem = weatherResponse.data.timelines.daily[0].values.temperatureAvg;

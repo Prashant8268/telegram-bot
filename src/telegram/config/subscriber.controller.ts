@@ -1,5 +1,3 @@
-// subscribers/subscribers.controller.ts
-
 import { Controller, Get, Post, Put, Delete, Param, Body } from '@nestjs/common';
 import { SubscribersService } from './subscribers.service';
 import { Subscriber } from './subscriber.model';

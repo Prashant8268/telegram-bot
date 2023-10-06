@@ -1,9 +1,9 @@
-// subscribers/subscriber.model.ts
+
 
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 
-@Schema() // Decorate the class with the schema
+@Schema() 
 export class Subscriber extends Document {
   @Prop({ required: true })
   name: string;
