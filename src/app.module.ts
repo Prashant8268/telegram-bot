@@ -1,12 +1,12 @@
 import { Module } from '@nestjs/common';
-import { AppController,HeyController } from './app.controller';
+import { AppController} from './app.controller';
 import { AppService } from './app.service';
 import { TelegramModule } from './telegram/telegram.module';
-import { TelegramController } from './telegram/telegram.controller';
-import {TelegramService} from './telegram/telegram.service'
-
+import { MongooseModule } from '@nestjs/mongoose';
+import { SubscribersModule } from './telegram/config/subscribers.module';
+import 'dotenv/config'; 
 @Module({
-  imports: [TelegramModule],
+imports: [MongooseModule.forRoot(process.env.MONGO_URL),TelegramModule,SubscribersModule],
   controllers: [AppController],
   providers: [AppService],
 })

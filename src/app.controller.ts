@@ -23,7 +23,6 @@ export class HeyController {
 
   @Get()
   getHello(): string {
-    // console.log(process.env.TELEGRAM_BOT_TOKEN);
     return 'hey homepage';
   }
 
