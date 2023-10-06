@@ -10,4 +10,6 @@ async function bootstrap() {
   await app.listen(3000);
 
 }
-bootstrap();
+export const handler = async (event, context) => {
+  await bootstrap();
+};
