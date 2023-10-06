@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
-import { SubscribersController } from './Subscriber.controller';
+import { SubscribersController } from './subscriber.controller';
 import { SubscribersService } from './subscribers.service';
 import { Subscriber, SubscriberSchema } from './subscriber.model';
 

@@ -81,7 +81,7 @@ this.bot.command('weather', async(ctx) => {
   } else {
     const city = commandArgs.slice(1).join(' ');
     const todayTem = await this.fetchWeather(city);
-    ctx.reply(`Today's Temperatur of  ${city} is  ${todayTem}`);
+    ctx.reply(` ${todayTem}`);
   }
 });
 
@@ -157,7 +157,7 @@ this.bot.command('todayWeather',async(ctx)=>{
     Minimum temperature of Day will be ${temperatureMin},
     Humidity will be around ${humidityAvg},
     Average wind speed will be ${windspeedAvg} m/s,
-    Overall will be a ${condition} day. 
+    Overall It will be a ${condition} day. 
     Thank you.`
     return check;
   } 
