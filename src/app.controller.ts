@@ -10,25 +10,5 @@ export class AppController {
     return this.appService.getHello();
   }
 
-  @Get('op')
-  letTalk():string {
-    return "This is working "
-  }
-}
-
-@Controller('hey')
-
-export class HeyController {
-  constructor(private readonly appService: AppService) {}
-
-  @Get()
-  getHello(): string {
-    return 'hey homepage';
-  }
-
-  @Get('op')
-  letTalk():string {
-    return "hey op "
-  }
 }
 
